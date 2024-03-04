@@ -19,7 +19,7 @@ class Greed(BaseLogic):
     def weghtcalc(self,board_bot:GameObject,weight,pos:Position):
         distd = self.distance(board_bot.position,pos)
         distb = self.distance(board_bot.properties.base,pos)
-        return weight/distd - 0.05 * distb
+        return weight/distd - distb/30
     def greed(self, board_bot:GameObject, board: Board):
         if (len(board.diamonds)> 0):
             max = board.diamonds[0]

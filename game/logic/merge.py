@@ -18,12 +18,12 @@ class Merge(BaseLogic):
     def weghtcalcTel(self,curpos:Position,diampos:Position,weight,posbase:Position,closTel:Position,farTel:Position):
         distd = countMoves(curpos,diampos)
         distb = countMoves(diampos,closTel) + countMoves(farTel,posbase)
-        return weight/distd - 0.05 * distb
+        return weight/distd -  distb/30
     
     def weghtcalc(self,curpos:Position,diampos:Position,weight,posbase:Position):
         distd = countMoves(curpos,diampos)
         distb = countMoves(diampos,posbase)
-        return weight/distd - 0.05 * distb
+        return weight/distd - distb/30
     
     def next_move(self, board_bot: GameObject, board: Board):
         
