@@ -13,28 +13,26 @@ class Greed(BaseLogic):
         self.directions = [(1, 0), (0, 1), (-1, 0), (0, -1)]
         self.goal_position: Optional[Position] = None
         self.current_direction = 0
-    def distance(self, position1, position2):
-        return ((position1.y-position2.y)**2 + (position1.x-position2.x)**2)**(1/2)
+    def distance(self, position1:Position, position2:Position):
+        return abs(position1.y-position2.y) + abs(position1.x-position2.x)
     
-    def weghtcalc(self,board_bot:GameObject,weight,pos):
+    def weghtcalc(self,board_bot:GameObject,weight,pos:Position):
         distd = self.distance(board_bot.position,pos)
         distb = self.distance(board_bot.properties.base,pos)
         return weight/distd - 0.05 * distb
     def greed(self, board_bot:GameObject, board: Board):
         if (len(board.diamonds)> 0):
             max = board.diamonds[0]
+            j = 1
+            while (board_bot.properties.diamonds == 4 and max.properties.points == 2 and j<len(board.diamonds)):
+                max = board.diamonds[j]
+                j+=1
 
             for i in range(len(board.diamonds)):
-                if (board.diamonds[i].type == "diamond merah"):
-                    weight = 2
-                else:
-                    weight = 1
-                if (max.type=="diamond merah"):
-                    maxw = 2
-                else:
-                    maxw = 1
-                if (not (board_bot.properties.diamonds == 4 and weight == 2 and board_bot.position != board.diamonds[i].position_) ):
-                    if (self.weghtcalc(board_bot,maxw,max) < self.weghtcalc(board_bot,weight,board.diamonds[i].position)):
+                weight = board.diamonds[i].properties.points
+                maxw = max.properties.points
+                if (not (board_bot.properties.diamonds == 4 and weight == 2 and board_bot.position != board.diamonds[i].position) ):
+                    if (self.weghtcalc(board_bot,maxw,max.position) < self.weghtcalc(board_bot,weight,board.diamonds[i].position)):
                         max = board.diamonds[i]
 
         return max.position
@@ -45,6 +43,7 @@ class Greed(BaseLogic):
         if props.diamonds == 5:
             # Move to base
             base = board_bot.properties.base
+            self.goal_position = base
         else:
             # Just roam around
             self.goal_position = self.greed(board_bot,board)
