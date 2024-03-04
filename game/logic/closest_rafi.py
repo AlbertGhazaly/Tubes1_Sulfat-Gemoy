@@ -61,45 +61,39 @@ class ClosestDiamond_Rafi(BaseLogic):
             # Find Closest
             diamonds = board.diamonds
             
-            closest_diamond = diamonds[0].position
-            closest_diamond_via_teleport = diamonds[0].position
+            closest_diamond = diamonds[0]
+            closest_diamond_via_teleport = diamonds[0]
 
-            curr_moves = countMoves(current_position, closest_diamond)
-            if curr_moves == 0:
-                curr_moves = 999
-                
-            curr_moves_via_teleport = moves_to_teleporter + countMoves(teleport_exit, closest_diamond_via_teleport)
-            if curr_moves_via_teleport == 0:
-                curr_moves_via_teleport = 999
-
+            curr_moves = countMoves(current_position, closest_diamond.position)
+            curr_moves_via_teleport = moves_to_teleporter + countMoves(teleport_exit, closest_diamond_via_teleport.position)
 
             for diamond in diamonds:
 
-                return_home_flag = False
-
-                if diamond.properties.points + props.diamonds > 5:
+                if diamond.properties.points + props.diamonds == 6:
 
                     return_home_flag = True
 
                     print("Diamond full")
 
 
-                    if countMoves(current_position, base) < countMoves(current_position, teleport_enter) + countMoves(teleport_exit, base):
-                        self.goal_position = base
-                    else:
-                        self.goal_position = teleport_enter
-    
+                    print(self.goal_position)
+
                 else:
+                    return_home_flag = False
+
                     new_moves = countMoves(current_position, diamond.position)
                     new_moves_via_teleport = moves_to_teleporter + countMoves(teleport_exit, diamond.position)
 
-                    if (new_moves < curr_moves):
-                        curr_moves = new_moves
-                        closest_diamond = diamond.position
+                    print(curr_moves)
+                    print(new_moves)
 
-                    if (new_moves_via_teleport < curr_moves_via_teleport):
+                    if (new_moves < curr_moves or closest_diamond.properties.points + props.diamonds == 6):
+                        curr_moves = new_moves
+                        closest_diamond = diamond
+
+                    if (new_moves_via_teleport < curr_moves_via_teleport  or closest_diamond_via_teleport.properties.points + props.diamonds == 6):
                         curr_moves_via_teleport = new_moves_via_teleport
-                        closest_diamond_via_teleport = diamond.position
+                        closest_diamond_via_teleport = diamond
 
             # print("No teleporter moves: ", countMoves(current_position, self.goal_position))
             # print("Teleporter moves: ", curr_moves_via_teleport)
@@ -107,12 +101,15 @@ class ClosestDiamond_Rafi(BaseLogic):
             if not(return_home_flag):
                 if (curr_moves_via_teleport < curr_moves and current_position != teleport_enter):
                     self.goal_position = teleport_enter
-
-                    print("Go to teleporter!")
                 else:
-                    print("Rusak!")
-                    print(closest_diamond)
-                    self.goal_position = closest_diamond
+                    self.goal_position = closest_diamond.position
+            else:
+                if countMoves(current_position, base) < countMoves(current_position, teleport_enter) + countMoves(teleport_exit, base):
+                    self.goal_position = base
+                else:
+                    self.goal_position = teleport_enter
+
+            print(self.goal_position)
 
             
 
