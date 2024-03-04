@@ -6,6 +6,7 @@ from game.api import Api
 from game.board_handler import BoardHandler
 from game.bot_handler import BotHandler
 from game.logic.greed import Greed
+from game.logic.merge import Merge
 from game.logic.closest_rafi import ClosestDiamond_Rafi
 from game.util import *
 from game.logic.base import BaseLogic
@@ -16,6 +17,7 @@ DEFAULT_BOARD_ID = 1
 CONTROLLERS = {
     "Greed": Greed,
     "Rafi": ClosestDiamond_Rafi,
+    "Merge":Merge,
 }
 
 ###############################################################################
