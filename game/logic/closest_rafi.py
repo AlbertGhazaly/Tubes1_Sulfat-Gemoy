@@ -53,10 +53,10 @@ class ClosestDiamond_Rafi(BaseLogic):
         # Analyze new state
         if props.diamonds == 5:
 
-            if countMoves(current_position, base) < countMoves(current_position, teleport_enter) + countMoves(teleport_exit, base):
-                self.goal_position = base
-            else:
+            if countMoves(current_position, base) > countMoves(current_position, teleport_enter) + countMoves(teleport_exit, base) and current_position != teleport_enter:
                 self.goal_position = teleport_enter
+            else:
+                self.goal_position = base
         else:
             # Find Closest
             diamonds = board.diamonds
@@ -65,7 +65,12 @@ class ClosestDiamond_Rafi(BaseLogic):
             closest_diamond_via_teleport = diamonds[0].position
 
             curr_moves = countMoves(current_position, closest_diamond)
+            if curr_moves == 0:
+                curr_moves = 999
+                
             curr_moves_via_teleport = moves_to_teleporter + countMoves(teleport_exit, closest_diamond_via_teleport)
+            if curr_moves_via_teleport == 0:
+                curr_moves_via_teleport = 999
 
 
             for diamond in diamonds:
@@ -106,6 +111,7 @@ class ClosestDiamond_Rafi(BaseLogic):
                     print("Go to teleporter!")
                 else:
                     print("Rusak!")
+                    print(closest_diamond)
                     self.goal_position = closest_diamond
 
             
