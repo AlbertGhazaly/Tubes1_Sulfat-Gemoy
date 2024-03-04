@@ -33,7 +33,7 @@ class Greed(BaseLogic):
                     maxw = 2
                 else:
                     maxw = 1
-                if (not (board_bot.properties.diamonds == 4 and weight==2 and board_bot.position != board.diamonds[i].position_) ):
+                if (not (board_bot.properties.diamonds == 4 and weight == 2 and board_bot.position != board.diamonds[i].position_) ):
                     if (self.weghtcalc(board_bot,maxw,max) < self.weghtcalc(board_bot,weight,board.diamonds[i].position)):
                         max = board.diamonds[i]
 
