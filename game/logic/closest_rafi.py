@@ -67,36 +67,48 @@ class ClosestDiamond_Rafi(BaseLogic):
             curr_moves = countMoves(current_position, closest_diamond)
             curr_moves_via_teleport = moves_to_teleporter + countMoves(teleport_exit, closest_diamond_via_teleport)
 
+
             for diamond in diamonds:
 
+                return_home_flag = False
+
                 if diamond.properties.points + props.diamonds > 5:
+
+                    return_home_flag = True
+
+                    print("Diamond full")
+
 
                     if countMoves(current_position, base) < countMoves(current_position, teleport_enter) + countMoves(teleport_exit, base):
                         self.goal_position = base
                     else:
                         self.goal_position = teleport_enter
-                    continue
+    
+                else:
+                    new_moves = countMoves(current_position, diamond.position)
+                    new_moves_via_teleport = moves_to_teleporter + countMoves(teleport_exit, diamond.position)
 
-                new_moves = countMoves(current_position, diamond.position)
-                new_moves_via_teleport = moves_to_teleporter + countMoves(teleport_exit, diamond.position)
+                    if (new_moves < curr_moves):
+                        curr_moves = new_moves
+                        closest_diamond = diamond.position
 
-                if (new_moves < curr_moves):
-                    curr_moves = new_moves
-                    closest_diamond = diamond.position
-
-                if (new_moves_via_teleport < curr_moves_via_teleport):
-                    curr_moves_via_teleport = new_moves_via_teleport
-                    closest_diamond_via_teleport = diamond.position
+                    if (new_moves_via_teleport < curr_moves_via_teleport):
+                        curr_moves_via_teleport = new_moves_via_teleport
+                        closest_diamond_via_teleport = diamond.position
 
             # print("No teleporter moves: ", countMoves(current_position, self.goal_position))
             # print("Teleporter moves: ", curr_moves_via_teleport)
             
-            if (curr_moves_via_teleport < curr_moves and current_position != teleport_enter):
-                self.goal_position = teleport_enter
+            if not(return_home_flag):
+                if (curr_moves_via_teleport < curr_moves and current_position != teleport_enter):
+                    self.goal_position = teleport_enter
 
-                print("Go to teleporter!")
-            else:
-                self.goal_position = closest_diamond
+                    print("Go to teleporter!")
+                else:
+                    print("Rusak!")
+                    self.goal_position = closest_diamond
+
+            
 
         # We are aiming for a specific position, calculate delta
         delta_x, delta_y = get_direction(
