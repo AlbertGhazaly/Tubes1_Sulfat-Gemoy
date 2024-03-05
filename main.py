@@ -5,6 +5,7 @@ from colorama import Back, Fore, Style, init
 from game.api import Api
 from game.board_handler import BoardHandler
 from game.bot_handler import BotHandler
+from game.logic.difGreed import DifGreed
 from game.logic.greed import Greed
 from game.logic.merge import Merge
 from game.logic.closest_rafi import ClosestDiamond_Rafi
@@ -18,6 +19,7 @@ CONTROLLERS = {
     "Greed": Greed,
     "Rafi": ClosestDiamond_Rafi,
     "Merge":Merge,
+    "DifGreed":DifGreed,
 }
 
 ###############################################################################
