@@ -11,16 +11,25 @@ def countMoves(pos1: Position, pos2: Position):
 class Merge(BaseLogic):
     def __init__(self):
         self.goal_position: Optional[Position] = None
-
+    # greedy melalui teleporter
     def weghtcalcTel(self,curpos:Position,diampos:Position,weight,posbase:Position, closTelPos:Position, farTelPos:Position,
                      closTelDiam:Position,farTelDiam:Position):
+        #posbase : posisi base, curpos : current position, weight : point diamond (1 atau 2)
+        #closTelPos (teleport terdekat dari posisi robot) dan sebaliknya
+        #closeTelDiam (teleport terdekat dari diamond) dan sebaliknya
         distd = countMoves(curpos,closTelPos) + countMoves(farTelPos,diampos)
+
         distb = countMoves(diampos,closTelDiam) + countMoves(farTelDiam,posbase)
+
+        #cek apakah jarak base ke diamond lebih dekat lewat teleport atau tidak
+        if (distb>countMoves(diampos,posbase)):
+            distb = countMoves(diampos,posbase)
+
         if (distd==0 or distb==0):
             return 0
         else:
             return float(weight/(distd*(distb**(1/2))))
-    
+    #greedy tanpa melalui teleporter (jalan kaki)
     def weghtcalc(self,curpos:Position,diampos:Position,weight,posbase:Position):
         distd = countMoves(curpos,diampos)
         distb = countMoves(diampos,posbase)
@@ -37,9 +46,9 @@ class Merge(BaseLogic):
         # positions
         current_position = board_bot.position
         base = board_bot.properties.base
-
+        remain_time = board_bot.properties.milliseconds_left/1000
         # Ketika sudah berada di base dan masih tersisa waktu, goal position akan di assign ke (7,7) tengah map
-        if (current_position.x==base.x and current_position.y==base.y and (board_bot.properties.milliseconds_left/1000)<= 1.5):
+        if (current_position.x==base.x and current_position.y==base.y and remain_time <2):
             print("Sudah di base")
             if (base.x!=7 and base.y !=7):
                 self.goal_position.x = 7
@@ -99,7 +108,7 @@ class Merge(BaseLogic):
                         self.goal_position.y = 6
 
             else:
-                # Mencar diamond terdekat, greed by weight/distance yang dikalkulasi pada 
+                # Mencari diamond terdekat, greed by weight/distance yang dikalkulasi pada 
                 # fungsi : weghtcalc (distance diukur dengan jalan kaki) dan weghtcalcTel (distance diukur dengan lewat teleporter)
                 # Lalu dibandingkan mana yang lebih besar pada setiap diamond
 
@@ -112,7 +121,7 @@ class Merge(BaseLogic):
                 curr_moves = countMoves(current_position, closest_diamond.position)
                 curr_moves_via_teleport = moves_to_teleporter + countMoves(teleport_exit, closest_diamond_via_teleport.position)
 
-                # Iterasi
+                # Iterasi tiap diamond
                 for diamond in diamonds:
 
                     #kondisi ketika ada diamond merah tetapi diamond yang didapat sudah 4
@@ -151,12 +160,13 @@ class Merge(BaseLogic):
                         greedTelMax = self.weghtcalcTel(current_position,diamond.position,maxw,base,teleport_enter,teleport_exit,teleporter_diamond_closest,teleporter_diamond_farest)
                         greedTelNext = self.weghtcalcTel(current_position,diamond.position,weight,base,teleport_enter,teleport_exit,teleporter_diamond_closest,teleporter_diamond_farest)
                         #Komparasi dan simpan
-                        if ( (greedTelNext < greedTelMax)  or closest_diamond_via_teleport.properties.points + props.diamonds == 6):
+                        if ( (greedTelNext > greedTelMax)  or closest_diamond_via_teleport.properties.points + props.diamonds == 6):
                             curr_moves_via_teleport = new_moves_via_teleport
                             closest_diamond_via_teleport = diamond
 
                 # jika tidak ingin pulang
                 if not(return_home_flag):
+                    #cek mana yang lebih dekat (teleport atau jalan kaki)
                     if ((countMoves(current_position,teleport_enter)+countMoves(teleport_exit,closest_diamond_via_teleport.position)) < countMoves(current_position,closest_diamond.position) and current_position != teleport_enter):
                         print("Go via teleport")
                         self.goal_position = teleport_enter
@@ -173,7 +183,7 @@ class Merge(BaseLogic):
 
                 
 
-        # We are aiming for a specific position, calculate delta
+        # Kalkulasi delta
         
         delta_x, delta_y = get_direction(
             current_position.x,
@@ -181,11 +191,32 @@ class Merge(BaseLogic):
             self.goal_position.x,
             self.goal_position.y,
         )
-        # 
+
+        #  Algoritma hindar teleporter
+
+        #jika robot sedang bergerak horizontal
         if (delta_x !=0):
+            print("delta: ",current_position.y-self.goal_position.y)
+            print("delta_x: ",delta_x)
+
+            #apakah ada teleporter yang satu garis secara vertikal dengan base di antara target dan robot
+            inLine = False
+            if (self.goal_position.y != current_position.y):
+                arah = (self.goal_position.y - current_position.y) / abs(self.goal_position.y - current_position.y)
+                if (teleport_enter.x==self.goal_position.x and ((base.y-teleport_enter.y)*(current_position.y-teleport_enter.y))<=0):
+                    inLine = True
+                elif (teleport_exit.x==self.goal_position.x and ((base.y-teleport_exit.y)*(current_position.y-teleport_exit.y))<=0):
+                    inLine = True
+            # menghindar teleporter horizontal
             if ((current_position.x + delta_x == teleport_enter.x) and (current_position.y == teleport_enter.y) and (self.goal_position.y - current_position.y)!=0 ):
                 delta_x = 0
-                delta_y = (self.goal_position.y - current_position.y) / abs(self.goal_position.y - current_position.y)
+                delta_y = arah
+            # menghindar teleporter vertikal
+            elif (abs(self.goal_position.x-current_position.x)==1 and inLine and (self.goal_position.y - current_position.y) !=0):
+                delta_x = 0
+                delta_y = arah
+        else:
+            print("delta y: ",delta_y)
         print(self.goal_position)
         print("Curr: ")
         print(current_position)
