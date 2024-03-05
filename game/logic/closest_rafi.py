@@ -157,13 +157,13 @@ class ClosestDiamond_Rafi(BaseLogic):
                     self.evade_portal = False
 
         # We are aiming for a specific position, calculate delta
-        # delta_x, delta_y = get_direction(
-        #     current_position.x,
-        #     current_position.y,
-        #     self.goal_position.x,
-        #     self.goal_position.y,
-        # )
+        delta_x, delta_y = get_direction(
+            current_position.x,
+            current_position.y,
+            self.goal_position.x,
+            self.goal_position.y,
+        )
                     
-        delta_x, delta_y = self.countDelta(current_position, self.goal_position, board)
+        # delta_x, delta_y = self.countDelta(current_position, self.goal_position, board)
 
         return delta_x, delta_y
