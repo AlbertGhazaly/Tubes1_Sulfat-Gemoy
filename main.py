@@ -8,6 +8,7 @@ from game.bot_handler import BotHandler
 from game.logic.greed import Greed
 from game.logic.merge import Merge
 from game.logic.closest_rafi import ClosestDiamond_Rafi
+from game.logic.rafifunc import Greed2
 from game.util import *
 from game.logic.base import BaseLogic
 
@@ -18,6 +19,7 @@ CONTROLLERS = {
     "Greed": Greed,
     "Rafi": ClosestDiamond_Rafi,
     "Merge":Merge,
+    "Rafi2":Greed2
 }
 
 ###############################################################################
@@ -207,11 +209,7 @@ while True:
 
     # Don't spam the board more than it allows!
     # sleep(move_delay * time_factor)
-<<<<<<< HEAD
-    sleep(0.1)
-=======
-    sleep(1)
->>>>>>> 24563b1c7cbedd862fb85e3a288f89f46258cc2b
+    sleep(0.5)
 
 
 ###############################################################################
