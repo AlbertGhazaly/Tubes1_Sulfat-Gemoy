@@ -40,7 +40,6 @@ class Merge(BaseLogic):
         # bot props
 
         props = board_bot.properties
-
         # positions
         current_position = board_bot.position
         base = board_bot.properties.base
@@ -161,7 +160,7 @@ class Merge(BaseLogic):
             self.goal_position.y,
         )
         if (delta_x !=0):
-            if (current_position.x + delta_x == teleport_enter.x and current_position.y == teleport_enter.y and (self.goal_position.y - current_position.y)!=0 ):
+            if ((current_position.x + delta_x == teleport_enter.x) and (current_position.y == teleport_enter.y) and (self.goal_position.y - current_position.y)!=0 ):
                 delta_x = 0
                 delta_y = (self.goal_position.y - current_position.y) / abs(self.goal_position.y - current_position.y)
         return delta_x, delta_y
