@@ -10,10 +10,7 @@ def countMoves(pos1: Position, pos2: Position):
 
 class DifGreed(BaseLogic):
     def __init__(self):
-        self.directions = [(1, 0), (0, 1), (-1, 0), (0, -1)]
         self.goal_position: Optional[Position] = None
-        self.current_direction = 0
-        self.targetdiamond = None
 
     def weghtcalcTel(self,curpos:Position,diampos:Position,weight,posbase:Position,closTel:Position,farTel:Position):
         distd = countMoves(curpos,diampos)

@@ -9,6 +9,7 @@ from game.logic.difGreed import DifGreed
 from game.logic.greed import Greed
 from game.logic.merge import Merge
 from game.logic.closest_rafi import ClosestDiamond_Rafi
+from game.logic.rafifunc import Greed2
 from game.util import *
 from game.logic.base import BaseLogic
 
@@ -20,6 +21,7 @@ CONTROLLERS = {
     "Rafi": ClosestDiamond_Rafi,
     "Merge":Merge,
     "DifGreed":DifGreed,
+    "Rafi2":Greed2
 }
 
 ###############################################################################
