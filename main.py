@@ -5,6 +5,7 @@ from colorama import Back, Fore, Style, init
 from game.api import Api
 from game.board_handler import BoardHandler
 from game.bot_handler import BotHandler
+from game.logic.difGreed import DifGreed
 from game.logic.greed import Greed
 from game.logic.merge import Merge
 from game.logic.closest_rafi import ClosestDiamond_Rafi
@@ -19,6 +20,7 @@ CONTROLLERS = {
     "Greed": Greed,
     "Rafi": ClosestDiamond_Rafi,
     "Merge":Merge,
+    "DifGreed":DifGreed,
     "Rafi2":Greed2
 }
 
@@ -209,7 +211,7 @@ while True:
 
     # Don't spam the board more than it allows!
     # sleep(move_delay * time_factor)
-    sleep(0.5)
+    sleep(1)
 
 
 ###############################################################################
