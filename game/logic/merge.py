@@ -163,4 +163,7 @@ class Merge(BaseLogic):
             if ((current_position.x + delta_x == teleport_enter.x) and (current_position.y == teleport_enter.y) and (self.goal_position.y - current_position.y)!=0 ):
                 delta_x = 0
                 delta_y = (self.goal_position.y - current_position.y) / abs(self.goal_position.y - current_position.y)
+        if (((delta_x+current_position.x)==base.x) and ((delta_y+current_position.y)==base.y) and (board_bot.properties.milliseconds_left <= 500)):
+            self.goal_position.x = 0
+            self.goal_position.y = 0
         return delta_x, delta_y
