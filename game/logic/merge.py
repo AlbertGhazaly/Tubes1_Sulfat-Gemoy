@@ -18,12 +18,12 @@ class Merge(BaseLogic):
     def weghtcalcTel(self,curpos:Position,diampos:Position,weight,posbase:Position,closTel:Position,farTel:Position):
         distd = countMoves(curpos,diampos)
         distb = countMoves(diampos,closTel) + countMoves(farTel,posbase)
-        return weight/distd - 0.05 * distb
+        return weight/distd -  distb/30
     
     def weghtcalc(self,curpos:Position,diampos:Position,weight,posbase:Position):
         distd = countMoves(curpos,diampos)
         distb = countMoves(diampos,posbase)
-        return weight/distd - 0.05 * distb
+        return weight/distd - distb/30
     
     def next_move(self, board_bot: GameObject, board: Board):
         
@@ -59,8 +59,8 @@ class Merge(BaseLogic):
             moves_to_teleporter = teleporter1_moves
 
         # Analyze new state
-        if props.diamonds == 5:
-
+        if props.diamonds == 5 or (board_bot.properties.milliseconds_left/1000 + 1< countMoves(current_position, base) 
+                                    and board_bot.properties.milliseconds_left/1000 + 1< countMoves(teleport_enter,current_position) + countMoves(teleport_exit,base)):
             if countMoves(current_position, base) > countMoves(current_position, teleport_enter) + countMoves(teleport_exit, base) and current_position != teleport_enter:
                 self.goal_position = teleport_enter
             else:
@@ -74,7 +74,7 @@ class Merge(BaseLogic):
 
             curr_moves = countMoves(current_position, closest_diamond.position)
             curr_moves_via_teleport = moves_to_teleporter + countMoves(teleport_exit, closest_diamond_via_teleport.position)
-
+            
             for diamond in diamonds:
 
                 if diamond.properties.points + props.diamonds == 6:
