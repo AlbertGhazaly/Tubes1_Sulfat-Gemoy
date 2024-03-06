@@ -156,7 +156,7 @@ class Merge(BaseLogic):
                         new_moves_via_teleport = moves_to_teleporter + countMoves(teleport_exit, diamond.position)
                         
                         #Kalkulasi Skor greed jika jalan kaki 
-                        greedWalkMax = self.weghtcalc(current_position,closest_diamond.position,maxw,base)
+                        greedWalkMax = self.weghtcalc(current_position,closest_diamond.position,maxw,base)  
                         greedWalkNext = self.weghtcalc(current_position,diamond.position,weight,base)
                         # Komparasi dan simpan
                         if (greedWalkNext > greedWalkMax
@@ -223,18 +223,19 @@ class Merge(BaseLogic):
             inLine = False
             if (self.goal_position.y != current_position.y):
                 arah = (self.goal_position.y - current_position.y) / abs(self.goal_position.y - current_position.y)
-                if (teleport_enter.x==self.goal_position.x and ((base.y-teleport_enter.y)*(current_position.y-teleport_enter.y))<=0):
+                if (teleport_enter.x==self.goal_position.x and ((self.goal_position.y-teleport_enter.y)*(current_position.y-teleport_enter.y))<=0):
                     inLine = True
-                elif (teleport_exit.x==self.goal_position.x and ((base.y-teleport_exit.y)*(current_position.y-teleport_exit.y))<=0):
+                elif (teleport_exit.x==self.goal_position.x and ((self.goal_position.y-teleport_exit.y)*(current_position.y-teleport_exit.y))<=0):
                     inLine = True
-            # menghindar teleporter horizontal
-            if ((current_position.x + delta_x == teleport_enter.x) and (current_position.y == teleport_enter.y) and (self.goal_position.y - current_position.y)!=0 ):
-                delta_x = 0
-                delta_y = arah
-            # menghindar teleporter vertikal
-            elif (abs(self.goal_position.x-current_position.x)==1 and inLine and (self.goal_position.y - current_position.y) !=0):
-                delta_x = 0
-                delta_y = arah
+                # menghindar teleporter horizontal
+                if ((current_position.x + delta_x == teleport_enter.x) and (current_position.y == teleport_enter.y) and (self.goal_position.y - current_position.y)!=0 ):
+                    delta_x = 0
+                    delta_y = arah
+                # menghindar teleporter vertikal
+                elif (abs(self.goal_position.x-current_position.x)==1 and inLine and (self.goal_position.y - current_position.y) !=0):
+                    print("Ini hindar vertikal")
+                    delta_x = 0
+                    delta_y = arah
         else:
             print("delta y: ",delta_y)
         print(self.goal_position)
