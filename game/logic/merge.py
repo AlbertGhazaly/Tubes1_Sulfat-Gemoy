@@ -122,7 +122,7 @@ class Merge(BaseLogic):
                 for diamond in diamonds:
 
                     #kondisi ketika ada diamond merah tetapi diamond yang didapat sudah 4
-                    if diamond.properties.points + props.diamonds == 6:
+                    if (diamond.properties.points + props.diamonds == 6 and closest_diamond.properties.points==2 and closest_diamond_via_teleport.properties.points==2):
                         # menuju base (pulang)
                         return_home_flag = True
 
@@ -135,17 +135,25 @@ class Merge(BaseLogic):
                             teleporter_diamond_closest = teleporters[0].position
                             teleporter_diamond_farest = teleporters[1].position
 
+                        if (countMoves(teleporters[0].position,closest_diamond_via_teleport.position) > countMoves(teleporters[1].position,closest_diamond_via_teleport.position)):
+                            teleporter_maxdiamond_closest = teleporters[1].position
+                            teleporter_maxdiamond_farest = teleporters[0].position
+                        else:
+                            teleporter_maxdiamond_closest = teleporters[0].position
+                            teleporter_maxdiamond_farest = teleporters[1].position
+
                         return_home_flag = False
 
                         # weight = point diamond
                         weight = diamond.properties.points
                         maxw = closest_diamond.properties.points
+                        maxw_tel = closest_diamond_via_teleport.properties.points
                         # jumlah step move baru
                         new_moves = countMoves(current_position, diamond.position)
                         new_moves_via_teleport = moves_to_teleporter + countMoves(teleport_exit, diamond.position)
                         
                         #Kalkulasi Skor greed jika jalan kaki 
-                        greedWalkMax = self.weghtcalc(current_position,closest_diamond.position,maxw,base)
+                        greedWalkMax = self.weghtcalc(current_position,closest_diamond.position,maxw,base)  
                         greedWalkNext = self.weghtcalc(current_position,diamond.position,weight,base)
                         # Komparasi dan simpan
                         if (greedWalkNext > greedWalkMax
@@ -154,8 +162,23 @@ class Merge(BaseLogic):
                             closest_diamond = diamond
                         
                         # Kalkulasi Skor greed jika pakai teleporter
-                        greedTelMax = self.weghtcalcTel(current_position,diamond.position,maxw,base,teleport_enter,teleport_exit,teleporter_diamond_closest,teleporter_diamond_farest)
-                        greedTelNext = self.weghtcalcTel(current_position,diamond.position,weight,base,teleport_enter,teleport_exit,teleporter_diamond_closest,teleporter_diamond_farest)
+                        greedTelMax = self.weghtcalcTel(current_position,
+                                                        closest_diamond_via_teleport.position,
+                                                        maxw_tel,
+                                                        base,
+                                                        teleport_enter,
+                                                        teleport_exit,
+                                                        teleporter_maxdiamond_closest,
+                                                        teleporter_maxdiamond_farest)
+                        
+                        greedTelNext = self.weghtcalcTel(current_position,
+                                                         diamond.position,
+                                                         weight,
+                                                         base,
+                                                         teleport_enter,
+                                                         teleport_exit,
+                                                         teleporter_diamond_closest,
+                                                         teleporter_diamond_farest)
                         #Komparasi dan simpan
                         if ( (greedTelNext > greedTelMax)  or closest_diamond_via_teleport.properties.points + props.diamonds == 6):
                             curr_moves_via_teleport = new_moves_via_teleport
@@ -174,10 +197,7 @@ class Merge(BaseLogic):
                     else:
                         self.goal_position = teleport_enter
 
-                
-
-                
-
+            
         # Kalkulasi delta
         
         delta_x, delta_y = get_direction(
@@ -196,9 +216,9 @@ class Merge(BaseLogic):
             inLine = False
             if (self.goal_position.y != current_position.y):
                 arah = (self.goal_position.y - current_position.y) / abs(self.goal_position.y - current_position.y)
-                if (teleport_enter.x==self.goal_position.x and ((base.y-teleport_enter.y)*(current_position.y-teleport_enter.y))<=0):
+                if (teleport_enter.x==self.goal_position.x and ((self.goal_position.y-teleport_enter.y)*(current_position.y-teleport_enter.y))<=0):
                     inLine = True
-                elif (teleport_exit.x==self.goal_position.x and ((base.y-teleport_exit.y)*(current_position.y-teleport_exit.y))<=0):
+                elif (teleport_exit.x==self.goal_position.x and ((self.goal_position.y-teleport_exit.y)*(current_position.y-teleport_exit.y))<=0):
                     inLine = True
                 # menghindar teleporter horizontal
                 if ((current_position.x + delta_x == teleport_enter.x) and (current_position.y == teleport_enter.y) and (self.goal_position.y - current_position.y)!=0 ):
@@ -206,7 +226,13 @@ class Merge(BaseLogic):
                     delta_y = arah
                 # menghindar teleporter vertikal
                 elif (abs(self.goal_position.x-current_position.x)==1 and inLine and (self.goal_position.y - current_position.y) !=0):
+                    print("Ini hindar vertikal")
                     delta_x = 0
                     delta_y = arah
+        else:
+            print("delta y: ",delta_y)
+        print(self.goal_position)
+        print("Curr: ")
+        print(current_position)
         
         return delta_x, delta_y
