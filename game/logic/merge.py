@@ -49,7 +49,6 @@ class Merge(BaseLogic):
         remain_time = board_bot.properties.milliseconds_left/1000
         # Ketika sudah berada di base dan masih tersisa waktu, goal position akan di assign ke (7,7) tengah map
         if (current_position.x==base.x and current_position.y==base.y and remain_time <2):
-            print("Sudah di base")
             if (base.x!=7 and base.y !=7):
                 self.goal_position.x = 7
                 self.goal_position.y = 7
@@ -85,8 +84,6 @@ class Merge(BaseLogic):
             #waktu yang tersisa
             
             remain_time = board_bot.properties.milliseconds_left/1000
-            print(remain_time," s")
-            print(countMoves(current_position,base))
             # Jika diamond sudah full atau waktu yang tersisa tinggal sedikit -> balik, ditambah jeda 2 detik untuk antisipasi
             if (props.diamonds == 5 or (((remain_time-2) <= countMoves(current_position, base))
                                         and ((remain_time-2 ) <= countMoves(teleport_enter,current_position) + countMoves(teleport_exit,base)))):
@@ -168,10 +165,8 @@ class Merge(BaseLogic):
                 if not(return_home_flag):
                     #cek mana yang lebih dekat (teleport atau jalan kaki)
                     if ((countMoves(current_position,teleport_enter)+countMoves(teleport_exit,closest_diamond_via_teleport.position)) < countMoves(current_position,closest_diamond.position) and current_position != teleport_enter):
-                        print("Go via teleport")
                         self.goal_position = teleport_enter
                     else:
-                        print("Go via diamond")
                         self.goal_position = closest_diamond.position
                 else:
                     if countMoves(current_position, base) < countMoves(current_position, teleport_enter) + countMoves(teleport_exit, base):
@@ -196,8 +191,6 @@ class Merge(BaseLogic):
 
         #jika robot sedang bergerak horizontal
         if (delta_x !=0):
-            print("delta: ",current_position.y-self.goal_position.y)
-            print("delta_x: ",delta_x)
 
             #apakah ada teleporter yang satu garis secara vertikal dengan base di antara target dan robot
             inLine = False
@@ -207,18 +200,13 @@ class Merge(BaseLogic):
                     inLine = True
                 elif (teleport_exit.x==self.goal_position.x and ((base.y-teleport_exit.y)*(current_position.y-teleport_exit.y))<=0):
                     inLine = True
-            # menghindar teleporter horizontal
-            if ((current_position.x + delta_x == teleport_enter.x) and (current_position.y == teleport_enter.y) and (self.goal_position.y - current_position.y)!=0 ):
-                delta_x = 0
-                delta_y = arah
-            # menghindar teleporter vertikal
-            elif (abs(self.goal_position.x-current_position.x)==1 and inLine and (self.goal_position.y - current_position.y) !=0):
-                delta_x = 0
-                delta_y = arah
-        else:
-            print("delta y: ",delta_y)
-        print(self.goal_position)
-        print("Curr: ")
-        print(current_position)
+                # menghindar teleporter horizontal
+                if ((current_position.x + delta_x == teleport_enter.x) and (current_position.y == teleport_enter.y) and (self.goal_position.y - current_position.y)!=0 ):
+                    delta_x = 0
+                    delta_y = arah
+                # menghindar teleporter vertikal
+                elif (abs(self.goal_position.x-current_position.x)==1 and inLine and (self.goal_position.y - current_position.y) !=0):
+                    delta_x = 0
+                    delta_y = arah
         
         return delta_x, delta_y
