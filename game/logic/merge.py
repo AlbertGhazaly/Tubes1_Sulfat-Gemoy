@@ -125,7 +125,7 @@ class Merge(BaseLogic):
                 for diamond in diamonds:
 
                     #kondisi ketika ada diamond merah tetapi diamond yang didapat sudah 4
-                    if diamond.properties.points + props.diamonds == 6:
+                    if (diamond.properties.points + props.diamonds == 6 and closest_diamond.properties.points==2 and closest_diamond_via_teleport.properties.points==2):
                         # menuju base (pulang)
                         return_home_flag = True
 
