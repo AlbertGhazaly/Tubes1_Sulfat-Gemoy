@@ -5,7 +5,7 @@ from game.models import GameObject, Board, Position
 from ..util import get_direction
 
 def countMoves(pos1: Position, pos2: Position):
-    return abs(pos1.x-pos2.x) + abs(pos1.y-pos2.y)
+    return abs(pos1.x - pos2.x) + abs(pos1.y - pos2.y)
 
 class SulfatGemoy(BaseLogic):
     def __init__(self):
@@ -51,7 +51,7 @@ class SulfatGemoy(BaseLogic):
 
         # Ketika sudah berada di base dan masih tersisa waktu, goal position akan di assign ke (7,7) tengah map
         if ((current_position.x == base.x) and (current_position.y == base.y) and (remain_time < 2)):
-            if (base.x!=7 and base.y !=7):
+            if ((base.x != 7) and (base.y != 7)):
                 self.goal_position.x = 7
                 self.goal_position.y = 7
             else:
