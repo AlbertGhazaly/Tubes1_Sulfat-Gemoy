@@ -8,7 +8,7 @@ from ..util import get_direction
 def countMoves(pos1: Position, pos2: Position):
     return abs(pos1.x-pos2.x) + abs(pos1.y-pos2.y)
 
-class Merge(BaseLogic):
+class SulfatGemoy(BaseLogic):
     def __init__(self):
         self.goal_position: Optional[Position] = None
     # greedy melalui teleporter
