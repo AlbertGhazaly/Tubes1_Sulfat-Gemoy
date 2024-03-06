@@ -8,7 +8,7 @@ from ..util import get_direction
 def countMoves(pos1: Position, pos2: Position):
     return abs(pos1.x-pos2.x) + abs(pos1.y-pos2.y)
 
-class Merge(BaseLogic):
+class SulfatGemoy(BaseLogic):
     def __init__(self):
         self.goal_position: Optional[Position] = None
     # greedy melalui teleporter
@@ -226,13 +226,7 @@ class Merge(BaseLogic):
                     delta_y = arah
                 # menghindar teleporter vertikal
                 elif (abs(self.goal_position.x-current_position.x)==1 and inLine and (self.goal_position.y - current_position.y) !=0):
-                    print("Ini hindar vertikal")
                     delta_x = 0
                     delta_y = arah
-        else:
-            print("delta y: ",delta_y)
-        print(self.goal_position)
-        print("Curr: ")
-        print(current_position)
         
         return delta_x, delta_y

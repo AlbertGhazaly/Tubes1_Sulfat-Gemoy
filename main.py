@@ -5,14 +5,7 @@ from colorama import Back, Fore, Style, init
 from game.api import Api
 from game.board_handler import BoardHandler
 from game.bot_handler import BotHandler
-from game.logic.difGreed import DifGreed
-from game.logic.greed import Greed
-from game.logic.merge import Merge
-from game.logic.closest_rafi import ClosestDiamond_Rafi
-from game.logic.rafifunc import Greed2
-from game.logic.greedy import Greedy
-from game.logic.anita import Anita
-
+from game.logic.SulfatGemoy import SulfatGemoy
 from game.util import *
 from game.logic.base import BaseLogic
 
@@ -20,13 +13,7 @@ init()
 BASE_URL = "http://localhost:3000/api"
 DEFAULT_BOARD_ID = 1
 CONTROLLERS = {
-    "Greed": Greed,
-    "Rafi": ClosestDiamond_Rafi,
-    "Merge":Merge,
-    "DifGreed":DifGreed,
-    "Rafi2":Greed2,
-    "Greedy":Greedy,
-    "Anita":Anita,
+    "SulfatGemoy":SulfatGemoy,
 }
 
 ###############################################################################
@@ -216,7 +203,7 @@ while True:
 
     # Don't spam the board more than it allows!
     # sleep(move_delay * time_factor)
-    sleep(0.3)
+    sleep(1)
 
 
 ###############################################################################
