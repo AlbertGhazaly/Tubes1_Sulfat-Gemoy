@@ -138,11 +138,19 @@ class Merge(BaseLogic):
                             teleporter_diamond_closest = teleporters[0].position
                             teleporter_diamond_farest = teleporters[1].position
 
+                        if (countMoves(teleporters[0].position,closest_diamond_via_teleport.position) > countMoves(teleporters[1].position,closest_diamond_via_teleport.position)):
+                            teleporter_maxdiamond_closest = teleporters[1].position
+                            teleporter_maxdiamond_farest = teleporters[0].position
+                        else:
+                            teleporter_maxdiamond_closest = teleporters[0].position
+                            teleporter_maxdiamond_farest = teleporters[1].position
+
                         return_home_flag = False
 
                         # weight = point diamond
                         weight = diamond.properties.points
                         maxw = closest_diamond.properties.points
+                        maxw_tel = closest_diamond_via_teleport.properties.points
                         # jumlah step move baru
                         new_moves = countMoves(current_position, diamond.position)
                         new_moves_via_teleport = moves_to_teleporter + countMoves(teleport_exit, diamond.position)
@@ -157,8 +165,23 @@ class Merge(BaseLogic):
                             closest_diamond = diamond
                         
                         # Kalkulasi Skor greed jika pakai teleporter
-                        greedTelMax = self.weghtcalcTel(current_position,diamond.position,maxw,base,teleport_enter,teleport_exit,teleporter_diamond_closest,teleporter_diamond_farest)
-                        greedTelNext = self.weghtcalcTel(current_position,diamond.position,weight,base,teleport_enter,teleport_exit,teleporter_diamond_closest,teleporter_diamond_farest)
+                        greedTelMax = self.weghtcalcTel(current_position,
+                                                        closest_diamond_via_teleport.position,
+                                                        maxw_tel,
+                                                        base,
+                                                        teleport_enter,
+                                                        teleport_exit,
+                                                        teleporter_maxdiamond_closest,
+                                                        teleporter_maxdiamond_farest)
+                        
+                        greedTelNext = self.weghtcalcTel(current_position,
+                                                         diamond.position,
+                                                         weight,
+                                                         base,
+                                                         teleport_enter,
+                                                         teleport_exit,
+                                                         teleporter_diamond_closest,
+                                                         teleporter_diamond_farest)
                         #Komparasi dan simpan
                         if ( (greedTelNext > greedTelMax)  or closest_diamond_via_teleport.properties.points + props.diamonds == 6):
                             curr_moves_via_teleport = new_moves_via_teleport
@@ -179,10 +202,7 @@ class Merge(BaseLogic):
                     else:
                         self.goal_position = teleport_enter
 
-                
-
-                
-
+            
         # Kalkulasi delta
         
         delta_x, delta_y = get_direction(
