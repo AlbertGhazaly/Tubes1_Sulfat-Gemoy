@@ -104,5 +104,5 @@ Untuk menjalankan banyak bot sekaligus
 
 - [Ahmad Rafi Maliki 13522137](https://github.com/rafimaliki)
 - [Nicholas Reymond Sihite 13522144](https://github.com/nicholasrs05)
-- [Albert Ghazally](https://github.com/albert260302)
+- [Albert Ghazaly](https://github.com/albert260302)
 
