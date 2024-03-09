@@ -106,7 +106,7 @@ Untuk menjalankan banyak bot sekaligus
 - [Nicholas Reymond Sihite 13522144](https://github.com/nicholasrs05)
 - [Albert Ghazaly](https://github.com/albert260302)
 
-## Dokumentasi
+## Dokumentasi dan Demo
 
 [YouTube](https://www.youtube.com/watch?v=0eQ4hU2y7yk&feature=youtu.be)
 
