@@ -79,7 +79,7 @@ Note: Langkah 1-6 hanya perlu dilakukan sekali, untuk selanjutnya cukup pastikan
 1. Clone github repository ini dan pindah ke root directory nya
 ```bash.
 https://github.com/albert260302/botStima.git
-cd botStima
+cd botStima/src
 ```
 
 2. Pastikan game engine sudah menyala
