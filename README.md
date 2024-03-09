@@ -76,7 +76,7 @@ Note: Langkah 1-6 hanya perlu dilakukan sekali, untuk selanjutnya cukup pastikan
 
 ### Konfigurasi Bot
 
-1. Clone github repository ini dan pindah ke root directory nya
+1. Clone github repository ini dan pindah ke directory src
 ```bash.
 git clone https://github.com/albert260302/Tubes1_Sulfat-Gemoy
 cd Tubes1_Sulfat-Gemoy/src
