@@ -2,7 +2,9 @@
 ## Tubes 1 : IF2211 Strategi Algoritma
 ## Implementasi Algoritma Greedy dalam Permainan Diamonds by Etimo
 
+<p style="text-align: justify;">
 Bot yang kami rancang merupakan implementasi dari "Algoritma Greedy by Biggest Weight Divided by Distance" yang merupakan modifikasi dari algoritma greedy yang awalnya berfokus pada jarak terpendek ke lokasi target. Dalam modifikasi ini, algoritma memprioritaskan diamond dengan bobot terbesar, dihitung dengan membagi skor diamond dengan hasil kali dari jarak bot ke diamond dengan akar dari jarak diamond ke base.
+</p>
 
 
 ## Instalasi
